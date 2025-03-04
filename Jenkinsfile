@@ -2,35 +2,51 @@ pipeline {
     agent any
 
     environment {
-        VERCEL_TOKEN = credentials('VERCEL_TOKEN')  // Fetching Vercel Token from Jenkins credentials
+        // Fetching Vercel Token from Jenkins credentials
+        VERCEL_TOKEN = credentials('VERCEL_TOKEN')
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/Parvezali4953/Pipeline.git'  // Replace with your GitHub repo
+                // Checkout the code from your Git repository
+                git branch: 'master', url: 'https://github.com/Parvezali4953/Pipeline.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
+                // Install npm dependencies
                 sh 'npm install'
             }
         }
 
         stage('Build React App') {
             steps {
-                sh 'npm run build'  // Builds the React project
+                // Build the React app
+                sh 'npm run build'
             }
         }
 
         stage('Deploy to Vercel') {
             steps {
+                // Deploy to Vercel using the Vercel CLI
                 sh '''
+                    echo "Installing Vercel CLI..."
                     npm install -g vercel  # Install Vercel CLI globally
-                    vercel --prod --token=$VERCEL_TOKEN  # Deploying to Vercel
+                    echo "Deploying to Vercel..."
+                    vercel --prod --token=$VERCEL_TOKEN  # Deploy to production
                 '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment to Vercel succeeded!'
+        }
+        failure {
+            echo 'Deployment to Vercel failed. Check the logs for more details.'
         }
     }
 }
