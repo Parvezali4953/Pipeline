@@ -1,10 +1,7 @@
 pipeline {
     agent any
 
-    environment {
-        VERCEL_TOKEN = credentials('VERCEL_TOKEN')  // Fetching Vercel Token from Jenkins credentials
-    }
-
+     
     stages {
         stage('Checkout Code') {
             steps {
@@ -18,13 +15,6 @@ pipeline {
             }
         }
 
-        stage('Deploy to Vercel') {
-            steps {
-                sh '''
-                    npm install -g vercel  # Install Vercel CLI globally
-                    vercel --prod --token=$VERCEL_TOKEN  # Deploying to Vercel
-                '''
-            }
-        }
+         
     }
 }
