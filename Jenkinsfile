@@ -41,12 +41,4 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'Deployment to Vercel succeeded!'
-        }
-        failure {
-            echo 'Deployment to Vercel failed. Check the logs for more details.'
-        }
-    }
 }
